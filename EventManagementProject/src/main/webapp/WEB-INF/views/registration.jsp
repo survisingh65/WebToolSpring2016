@@ -75,7 +75,7 @@
 		<div class="col-md-6">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="login.html"><i class="fa fa-sign-in"></i> Login</a></li>
-				<li><a href="contact2"><i class="fa fa-comment"></i>
+				<li><a href="contacthome"><i class="fa fa-comment"></i>
 						Contact</a></li>
 			</ul>
 		</div>

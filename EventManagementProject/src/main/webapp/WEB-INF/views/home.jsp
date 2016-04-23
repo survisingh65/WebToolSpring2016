@@ -12,7 +12,7 @@
 <!-- SCROLLS -->
 <script
 	src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDhcAb4DpiNAdtBhBT3NFegFtT2UjX-aDg" async defer></script>
+	<script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDhcAb4DpiNAdtBhBT3NFegFtT2UjX-aDg"></script>
 <script
 	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <link rel="stylesheet" type="text/css"
@@ -22,7 +22,7 @@
 <style>
 <%@ include file="styles.css"%>
 </style>
-<script src="<c:url value="/resources/controller.js" />"></script>
+<script src="<c:url value="/resources/homeController.js" />"></script>
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="styles.css" />"/>-->
 <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,600'
 	rel='stylesheet' type='text/css'>
@@ -70,6 +70,7 @@
 							<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 						</button>
 					</div>
+				
 				</div>
 			</div>
 		</div>
@@ -77,7 +78,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
 				<li><a href="home"><i class="fa fa-home"></i> Home</a></li>
-				<li><a href="#myEvents"><i class="fa fa-child"></i> My
+				<li><a href="favoriteevent"><i class="fa fa-child"></i> My
 						Events</a></li>
 			    <li><a href="favorite"><i class="fa fa-diamond"></i>
 						Favorites</a></li>
@@ -94,7 +95,9 @@
 
 
 	<div id="main">
-	<div id="eventsList" style ="height:550px;"></div>
+		<div id="eventsList"></div>
+		<div id="map" class="map-view"></div>
+	
 	</div>
 </body>
 </html>

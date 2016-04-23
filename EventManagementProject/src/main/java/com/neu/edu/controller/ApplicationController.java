@@ -24,12 +24,12 @@ public class ApplicationController {
 	    return mv;
 	}
 	
-	@RequestMapping(value = "contact2", method = RequestMethod.GET)
+	@RequestMapping(value = "contacthome", method = RequestMethod.GET)
 	public ModelAndView contact2Page() {
 		
 		ModelAndView mv = new ModelAndView();
 		         
-		mv.setViewName("contact2");
+		mv.setViewName("contactHome");
 		
 	    return mv;
 	}

@@ -1,14 +1,17 @@
 package com.neu.edu.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang3.StringUtils;
-
+import org.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -55,9 +58,7 @@ public class UserController {
 		if (u == null) {
 			mv.setViewName("index");
 			return mv;
-		}
-		
-	
+		}	
 		mv.setViewName("home");
 	
 		return mv;
@@ -99,21 +100,53 @@ public class UserController {
 	}
 	
 	
+	@RequestMapping(value = "favoriteevent", method = RequestMethod.GET)
+	public ModelAndView myPreferEventPage(HttpSession session) {
+		
+		ModelAndView mv = new ModelAndView();
+		User u = (User) session.getAttribute("user");
+         
+		if (u == null) {
+			mv.setViewName("index");
+			return mv;
+		}
+		
+		mv.setViewName("myevent");
+		
+	
+		return mv;
+	}
+	
 
-	@RequestMapping(value ="getprefernceurl", method=RequestMethod.POST)
-    public ModelAndView getPreference(HttpSession session) { 
+	@RequestMapping(value ="getprefernceurl", method=RequestMethod.GET)
+    public String getPreference(HttpSession session, HttpServletResponse response) throws IOException { 
 		ModelAndView mv = new ModelAndView();
 		User u = (User)session.getAttribute("user");
-	    
 		if(u == null){
 	    	mv.setViewName("home");
-			return mv;
+			return "home";
 	    }
 	    UserDAO ud = new UserDAO();
 	      
-	    //ud.updateUserPrefernce(u, prefSet);
+	    List<Preference> plist = ud.getUserPrefernce(u);
    	    
-	   	return mv; 
+	    StringBuilder sb = new StringBuilder();
+	    
+	    for(int i = 0; i<plist.size(); i++) {
+			sb.append(plist.get(i).getPreferenceCategory() + ",");
+			System.out.println(plist.get(i).getPreferenceCategory());
+	    }
+	    
+	    JSONObject obj = new JSONObject();
+	    if(sb != null){
+	    	obj.put("successmsg", sb.toString());
+	    }else{
+	    	obj.put("errormsg", "");
+	    }
+	            
+        PrintWriter out = response.getWriter();
+        out.print(obj);
+	   	return null; 
     }
 
 	

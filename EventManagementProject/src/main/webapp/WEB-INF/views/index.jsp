@@ -17,7 +17,8 @@
         <style>
      		<%@ include file="styles.css"%>
 		</style>
-		<script src="<c:url value="/resources/controller.js" />"></script>
+		<script src="<c:url value="/resources/homeController.js" />"></script>
+		<script src="<c:url value="/resources/userController.js" />"></script>
         <!-- <link rel="stylesheet" type="text/css" href="<c:url value="styles.css" />"/>-->
         <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,600' rel='stylesheet' type='text/css'>
         <link href='https://fonts.googleapis.com/css?family=Shadows+Into+Light' rel='stylesheet' type='text/css'>
@@ -56,7 +57,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="register"><i
                         class="fa fa-sign-in"></i> Register</a></li>
-                 <li><a href="contact2"><i class="fa fa-comment"></i>
+                 <li><a href="contacthome"><i class="fa fa-comment"></i>
                     Contact</a></li>
             </ul>
         </div>

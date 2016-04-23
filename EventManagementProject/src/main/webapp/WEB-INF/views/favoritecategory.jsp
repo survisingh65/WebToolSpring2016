@@ -22,7 +22,8 @@
 <style>
 <%@ include file="styles.css"%>
 </style>
-<script src="<c:url value="/resources/controller.js" />"></script>
+<script src="<c:url value="/resources/homeController.js" />"></script>
+<script src="<c:url value="/resources/userController.js" />"></script>
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="styles.css" />"/>-->
 <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,600'
 	rel='stylesheet' type='text/css'>
@@ -53,7 +54,7 @@
 </head>
 
 <!-- define angular controller -->
-<body onload="initializeMap()">
+<body onload="getPreference()">
 	<nav class="navbar navbar-default">
 	<div class="container-fluid">
 		<div class="col-md-3">
@@ -77,7 +78,7 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
 				<li><a href="home"><i class="fa fa-home"></i> Home</a></li>
-				<li><a href="#myEvents"><i class="fa fa-child"></i> My
+				<li><a href="favoriteevent"><i class="fa fa-child"></i> My
 						Events</a></li>
 			    <li><a href="favorite"><i class="fa fa-diamond"></i>
 						Favorites</a></li>
@@ -94,13 +95,13 @@
 	<div class="container">
 		<div class="col-xs-12 col-sm-10 col-sm-offset-1">
 			<h2>Ticked are my favourite sub-categories...!!</h2>
-			<form name = "preferenceform" class="larger-form" onsubmit="savePreference()" >
+			<div name = "preferenceform" class="larger-form">
 			    </br>
 				<label><i class="fa fa-music">&nbsp;Music</i></label></br>
 				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3007"/>Pop</label>
 				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3011"/> Rock</label>
 				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3012"/>Metal</label>
-				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3011"/> Folk</label>
+				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3013"/> Folk</label>
 				<label class="checkbox-inline"><input type="checkbox" name="pref" value="3017"/>Opera</label>
 			    </br>
 			    </br>
@@ -136,8 +137,8 @@
 				<label class="checkbox-inline"><input type="checkbox" name="pref" value="16007"/> Channukah</label>
 			    </br>
 			    </br>
-			    <button type="submit" class="btn btn-success">Save</button>
-			</form>
+			    <button type="submit" onclick="savePreference()" class="btn btn-success">Save</button>
+			</div>
 		</div>
 	</div>
 

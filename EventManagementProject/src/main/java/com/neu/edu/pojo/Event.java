@@ -34,6 +34,16 @@ public class Event {
 	@Column(name="venue")
 	private String venue;
 	
+	@Column(name="img", length = 8000)
+	private String img;
+		
+	public String getImg() {
+		return img;
+	}
+
+	public void setImg(String img) {
+		this.img = img;
+	}
 	@ManyToMany(mappedBy="events")
     private Set<User> users = new HashSet<User>();
 	

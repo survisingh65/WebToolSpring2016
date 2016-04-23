@@ -19,7 +19,7 @@
 <style>
 <%@ include file ="styles.css"%>
 </style>
-<script src="<c:url value="/resources/controller.js"/>"></script>
+<script src="<c:url value="/resources/homeController.js"/>"></script>
 <!-- <link rel="stylesheet" type="text/css" href="<c:url value="styles.css" />"/>-->
 <link href='https://fonts.googleapis.com/css?family=Raleway:400,800,600'
 	rel='stylesheet' type='text/css'>
@@ -76,8 +76,10 @@
 			<ul class="nav navbar-nav navbar-right">
 				<li><a href="logout"><i class="fa fa-sign-out"></i> Log Out</a></li>
 				<li><a href="home"><i class="fa fa-home"></i> Home</a></li>
-				<li><a href="#myEvents"><i class="fa fa-child"></i> My
+				<li><a href="favoriteevent"><i class="fa fa-child"></i> My
 						Events</a></li>
+				<li><a href="favorite"><i class="fa fa-diamond"></i>
+						Favorites</a></li>
 				<li><a href="history"><i class="fa fa-history"></i></i>
 						History</a></li>
 				<li><a href="contact"><i class="fa fa-comment"></i>
@@ -96,7 +98,10 @@
 						
 							<div class="row">
 							<a href="#"> 
-								<div class="col-md-12" style="padding: 10px;">
+								<div class="col-md-4">
+									<img id="eventBanner" src="${u.img}" style="width: 60%; margin-left: 30px; margin-top: 10px;" alt ="no photo available"></img>
+								</div>
+								<div class="col-md-8" style="padding: 10px;">
                                     <p>
                                         <b>	${u.eventName}</b>
                                     </p>

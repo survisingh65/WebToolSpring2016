@@ -30,6 +30,22 @@ public class UserDAO extends DAO{
 	public User createUserDatabase(User u){
 		try{
 			begin();
+			u.setStatus("user");
+			getSession().save(u);
+            commit();
+			
+	        return u;
+		}catch (HibernateException e) {
+            rollback();
+            e.printStackTrace();
+        }
+		return null;
+	}
+	
+	public User createAdminUser(User u){
+		try{
+			begin();
+			u.setStatus("admin");
 			getSession().save(u);
             commit();
 			
@@ -84,24 +100,14 @@ public class UserDAO extends DAO{
 			Query q = getSession().createQuery("from User where email = :eid");
 			q.setString("eid", u.getEmail());
 			User user = (User) q.uniqueResult();
-//			System.out.println(up);
-//			List<String> list = new ArrayList<String>(Arrays.asList(up.split(" , ")));
-			
-//			Preference p = new Preference();
-//			System.out.println(list.size());
-			
-//			String pList[]=StringUtils.split(up, ",");
-//			
-//			System.out.println(pList.length);
-//			for(String temp: list){
-//			p.setPreferenceCategory(temp);
-//			}
-//			p.setPerson(user);
-			//p.setEventCategoryId(up);
 			
 			q = getSession().createQuery("from Person where personID = :p_id");
 			q.setInteger("p_id", user.getPersonID());
 			Person per = (Person) q.uniqueResult();
+			
+			q = getSession().createQuery("delete Preference p where p.person.personID = :pid");
+			q.setInteger("pid", per.getPersonID());
+			q.executeUpdate();
 			
 			for(Iterator<Preference> it = up.iterator(); it.hasNext(); ){
 				Preference p = it.next();
@@ -110,13 +116,29 @@ public class UserDAO extends DAO{
 				getSession().save(p);
 			}
 			
-			//user.getPreference().addAll(up);
-			//user.setPreference(new HashSet<Preference>());
-			//user.getPreference().addAll(up);
-			
-			//getSession().saveOrUpdate(user);
-            commit();
+			commit();
             return user;
+		}catch (HibernateException ehib) {
+            rollback();
+            ehib.printStackTrace();
+        }
+		
+		return null;
+	}
+	
+	public List<Preference> getUserPrefernce(User u){
+		try{
+			begin();
+			Query q = getSession().createQuery("from User where email = :eid");
+			q.setString("eid", u.getEmail());
+			User user = (User) q.uniqueResult();
+			
+		    q = getSession().createQuery("from Preference p where p.person.personID = :pid)");
+			q.setInteger("pid", user.getPersonID());
+			List<Preference> p = q.list();
+            commit();
+            System.out.print("Insider - " + p.size());
+            return p;
 		}catch (HibernateException ehib) {
             rollback();
             ehib.printStackTrace();

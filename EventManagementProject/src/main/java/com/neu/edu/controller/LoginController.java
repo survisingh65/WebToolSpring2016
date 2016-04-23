@@ -1,12 +1,11 @@
 package com.neu.edu.controller;
 
-
-
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
@@ -17,124 +16,90 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.neu.edu.dao.*;
+import com.neu.edu.pojo.AdminEvent;
 import com.neu.edu.pojo.Event;
 import com.neu.edu.pojo.User;
 
 @Controller
 @RequestMapping("/")
 public class LoginController {
-	
+
 	@Autowired
 	@Qualifier("userValidator")
 	UserValidator userValidator;
-	
-	//@Autowired
-	//UserDAO ud; 
-	
+
 	@InitBinder
-	private void initBinder(WebDataBinder binder)
-	{
+	private void initBinder(WebDataBinder binder) {
 		binder.setValidator(userValidator);
 	}
-	
-	@RequestMapping(value ="login.html", method=RequestMethod.POST)
-	public String doSubmit(@ModelAttribute("user")User user, BindingResult result,HttpSession session){
-		 
+
+	@RequestMapping(value = "login.html", method = RequestMethod.POST)
+	public ModelAndView doSubmit(@ModelAttribute("user") User user, BindingResult result, HttpSession session) {
+
+		ModelAndView mv = new ModelAndView();
 		userValidator.validate(user, result);
-		if(result.hasErrors()){
-			return "home2";
+		if (result.hasErrors()) {
+			mv.setViewName("home2");
+			return mv;
 		}
-		
-		try{
-			System.out.print("Just Inside Login Controller");
-			UserDAO ud = new UserDAO();
-			User u = ud.verfiyLogin(user);
-			if(u == null){
-				return "index";
+
+		System.out.print("Just Inside Login Controller");
+		UserDAO ud = new UserDAO();
+		User u = ud.verfiyLogin(user);
+		try {
+			if (u == null) {
+				mv.setViewName("index");
+				return mv;
+			} else {
+				session.setAttribute("user", u);
 			}
-			else
-			{
-				session.setAttribute("user",user);	
-			}
-			
-		}catch(Exception e){
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		return "home";
-		
+
+		if (u.getStatus().equals("admin")) {
+			AdminController ac = new AdminController();
+			return ac.getAdminCreatedEvent(session);
+		} else {
+			mv.setViewName("home");
+			return mv;
+		}
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
-    public String loadForm(@ModelAttribute("user")User user, BindingResult result) { 
-   
-        return "index"; 
-    }
-	
-	@RequestMapping(value ="login.html", method=RequestMethod.GET)
-    public String initializeForm(@ModelAttribute("user")User user, BindingResult result) { 
-   
-        return "index"; 
-    }
-	
-	@RequestMapping(value ="register", method=RequestMethod.GET)
-    public String registerForm(@ModelAttribute("user")User user, BindingResult result) { 
-   
-        return "registration"; 
-    }
-	
-	@RequestMapping(value ="saveevent", method=RequestMethod.POST)
-    public String saveEvent(@RequestParam("eventId") String id, 
-    		@RequestParam("venue") String venue, @RequestParam("name") String name,
-    		@RequestParam("address") String address, @RequestParam("details") String details,
-    		@RequestParam("time") String time, HttpSession session) { 
-	    
-		User u = (User)session.getAttribute("user");
-	    
-		if(u == null){
-	    	return "index";
-	    }
-	    
-	    System.out.println(u.getEmail());
-	    System.out.println(u.getPersonID());
-	    System.out.println(u.getFirstName());
-	    System.out.println(u.getLastName());
-	    
-	    Event event = new  Event();
-	    Double eid = Double.parseDouble(id);
-	    event.setEventId(eid);
-	    event.setVenue(venue);
-	    event.setTime(time);
-	    event.setEventName(name);
-	    //event.setDescription(details);
-	    
-	    UserDAO ud = new UserDAO();
-		ud.updateUserEvent(u, event);
+	@RequestMapping(method = RequestMethod.GET)
+	public String loadForm(@ModelAttribute("user") User user, BindingResult result) {
+		return "index";
+	}
 
-		return "home"; 
-    }
-	
-	@RequestMapping(value ="saveregistereduser", method=RequestMethod.POST)
-	public String createUser(@ModelAttribute("user")User user, BindingResult result){
-		
+	@RequestMapping(value = "login.html", method = RequestMethod.GET)
+	public String initializeForm(@ModelAttribute("user") User user, BindingResult result) {
+		return "index";
+	}
+
+	@RequestMapping(value = "register", method = RequestMethod.GET)
+	public String registerForm(@ModelAttribute("user") User user, BindingResult result) {
+		return "registration";
+	}
+
+	@RequestMapping(value = "saveregistereduser", method = RequestMethod.POST)
+	public String createUser(@ModelAttribute("user") User user, BindingResult result) {
+
 		userValidator.validate(user, result);
-		if(result.hasErrors()){
+		if (result.hasErrors()) {
 			return "home";
 		}
-		
-		try{
+
+		try {
 			System.out.print("Just Inside register");
-			  UserDAO ud = new UserDAO();
-			  ud.createUserDatabase(user);
-		}catch(Exception e){
+			UserDAO ud = new UserDAO();
+			ud.createUserDatabase(user);
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	
+
 		return "index";
-		
+
 	}
-	
-	
-		
-	
+
 }
